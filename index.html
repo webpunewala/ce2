@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Santa Gift</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #ff5c5c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, select, textarea, button {
+            margin-top: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #ff5c5c;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #e04e4e;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #333;
+            color: white;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Secret Santa Gift Exchange</h1>
+    </header>
+    <main>
+        <h1>Send a Secret Santa Gift!</h1>
+        <form id="santaForm">
+            <label for="yourName">Your Name:</label>
+            <input type="text" id="yourName" name="yourName" placeholder="Enter your name" required>
+
+            <label for="gender">Your Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+
+            <label for="recipient">Tag Your Girlfriend/Crush:</label>
+            <input type="text" id="recipient" name="recipient" placeholder="Enter their name" required>
+
+            <label for="wish">Your Wish:</label>
+            <textarea id="wish" name="wish" placeholder="E.g., 'Hug me', 'Kiss me', or 'As you wish'" required></textarea>
+
+            <label for="customWish">Custom Wish (Optional):</label>
+            <input type="text" id="customWish" name="customWish" placeholder="Enter your custom wish">
+
+            <button type="submit">Generate Link</button>
+        </form>
+    </main>
+    <footer>
+        <p>Secret Santa &copy; 2024. Made with ❤️ for spreading joy!</p>
+    </footer>
+
+    <script>
+        document.getElementById('santaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const yourName = encodeURIComponent(document.getElementById('yourName').value);
+            const gender = encodeURIComponent(document.getElementById('gender').value);
+            const recipient = encodeURIComponent(document.getElementById('recipient').value);
+            const wish = encodeURIComponent(document.getElementById('wish').value);
+            const customWish = encodeURIComponent(document.getElementById('customWish').value);
+
+            const baseUrl = `${window.location.origin}${window.location.pathname}`;
+            const giftLink = `${baseUrl}?yourName=${yourName}&gender=${gender}&recipient=${recipient}&wish=${wish}&customWish=${customWish}`;
+
+            alert(`Copy this link and share it with your recipient:\n\n${giftLink}`);
+        });
+
+        // Display a dynamic wishing page if parameters are present in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('yourName') && urlParams.has('recipient') && (urlParams.has('wish') || urlParams.has('customWish'))) {
+            document.body.innerHTML = `
+                <header>
+                    <h1>Secret Santa Gift</h1>
+                </header>
+                <main>
+                    <h1>🎁 A Special Wish for You!</h1>
+                    <p><strong>From:</strong> ${decodeURIComponent(urlParams.get('yourName'))} (${decodeURIComponent(urlParams.get('gender'))})</p>
+                    <p><strong>To:</strong> ${decodeURIComponent(urlParams.get('recipient'))}</p>
+                    <p><strong>Wish:</strong> ${decodeURIComponent(urlParams.get('customWish') || urlParams.get('wish'))}</p>
+                </main>
+                <footer>
+                    <p>Secret Santa &copy; 2024. Made with ❤️ for spreading joy!</p>
+                </footer>
+            `;
+        }
+    </script>
+</body>
+</html>
